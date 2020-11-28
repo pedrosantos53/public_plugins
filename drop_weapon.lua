@@ -39,7 +39,6 @@ if (SERVER) then
 
 				for _, slot in pairs(inventory.slots) do
 					for _, item in pairs(slot) do
-						print(item.noDrop)
 						if (item.noDrop != true) then
 							item:Remove()
 						end
