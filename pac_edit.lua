@@ -8,6 +8,37 @@ PLUGIN.name = "PAC3 Integration with Male/Female support"
 PLUGIN.author = "Black Tea / pedro.santos53"
 PLUGIN.description = "PAC3 integration for item parts. Adds support for male and female pacData (pedro.santos53)."
 
+
+--[[ EXAMPLE USAGE FOR MALE/FEMALE SUPPORT
+	ON UNEQUIP
+
+	( assuming you are using ITEM:RemoveOutfit(client) to unequip the outfit )
+
+	if self.pacData or self.pacDataFemale or self.pacDataMale then
+		if client:IsFemale() and self.pacDataFemale then
+			client:RemovePart(self.uniqueID .. "female")
+		elseif !client:IsFemale() and self.pacDataMale then
+			client:RemovePart(self.uniqueID .. "male")
+		else
+			client:RemovePart(self.uniqueID)
+		end
+	end
+
+	ON EQUIP
+	( assuming you are using ITEM.functions.Equip to equip the outfit)
+
+	if item.pacData or item.pacDataFemale or item.pacDataMale then
+		if client:IsFemale() and item.pacDataFemale then
+			client:AddPart(item.uniqueID .. "female", item)
+		elseif !client:IsFemale() and item.pacDataMale then
+			client:AddPart(item.uniqueID .. "male", item)
+		else
+			client:AddPart(item.uniqueID, item)
+		end
+	end
+--]]
+
+
 if (!pace) then return end
 
 ix.pac = ix.pac or {}
