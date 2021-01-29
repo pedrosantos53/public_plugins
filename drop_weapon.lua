@@ -30,7 +30,7 @@ if (SERVER) then
 		if dmg:GetDamage() >= target:Health() then
 			if target and target:GetActiveWeapon() != ("weapon_physgun" or "gmod_tool" or "ix_hands" or "ix_keys") then
 				for k, v in pairs(items) do
-					if v:GetData("equip", false) and v.class == target:GetActiveWeapon():GetClass() then
+					if v:GetData("equip", false) and target:GetActiveWeapon() and (v.class == target:GetActiveWeapon():GetClass()) then
 						v:SetData("equip", false)
 						v:Transfer()
 						target:StripWeapon(v.class)
