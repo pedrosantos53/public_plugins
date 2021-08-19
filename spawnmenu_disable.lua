@@ -7,6 +7,8 @@ PLUGIN.description = "Removes the ability to open the spawn menu for non-staff."
 
 if CLIENT then
 	function PLUGIN:OnSpawnMenuOpen()
-		return LocalPlayer():IsAdmin()
+		if !(LocalPlayer():IsAdmin()) then
+			return false
+		end
 	end
 end
