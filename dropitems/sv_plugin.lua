@@ -18,13 +18,14 @@ function PLUGIN:PlayerHurt(target, attacker, health, damageAmount)
 		-- If the player is taking lethal damage
 		if health <= 0 then
 			local weapon = target:GetActiveWeapon()
+			local class = weapon and weapon:GetClass()
 
 			-- Check if dropping weapons is enabled and skip checking for weapon classes that shouldn't drop
-			if ix.config.Get("dropWeaponOnDeath", false) and !dontDrop[weapon:GetClass()] then
+			if ix.config.Get("dropWeaponOnDeath", false) and !dontDrop[class] then
 				for _, v in pairs(items) do
-					if v:GetData("equip", false) and (v.class == weapon:GetClass()) then
+					if v:GetData("equip", false) and (v.class == class) then
 						v:SetData("equip", false)
-						target:StripWeapon(v.class)
+						target:StripWeapon(class)
 						v:Transfer() -- drops the item
 						weapon = v
 						break
