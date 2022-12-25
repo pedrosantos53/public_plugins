@@ -19,26 +19,24 @@ function PLUGIN:PlayerHurt(target, attacker, health, damageAmount)
 		if health <= 0 then
 			local weapon = target:GetActiveWeapon()
 			local class = weapon and weapon:GetClass()
+			local bDropWeapons = ix.config.Get("dropWeaponOnDeath", false)
+			local bDestroyInventory = ix.config.Get("destroyInventoryOnDeath", false)
 
-			-- Check if dropping weapons is enabled and skip checking for weapon classes that shouldn't drop
-			if ix.config.Get("dropWeaponOnDeath", false) and !dontDrop[class] then
-				for _, v in pairs(items) do
-					if v:GetData("equip", false) and (v.class == class) then
-						v:SetData("equip", false)
+			for _, item in pairs(items) do
+				-- Check if dropping weapons is enabled and skip checking for weapon classes that shouldn't drop
+				if (item:GetData("equip", false) and (item.class == class)) then
+					weapon = item
+
+					if bDropWeapons and !dontDrop[class] then
+						item:SetData("equip", false)
 						target:StripWeapon(class)
-						v:Transfer() -- drops the item
-						weapon = v
-						break
+						item:Transfer() -- drops the item
 					end
 				end
-			end
 
-			-- Drop inventory, if enabled
-			if ix.config.Get("destroyInventoryOnDeath", false) then
-				for _, item in pairs(items) do
-					if !item.noDrop and item != weapon then
-						item:Remove()
-					end
+				-- Destroy inventory, if enabled
+				if bDestroyInventory and (!item.noDrop and item != weapon) then
+					item:Remove()
 				end
 			end
 		end
