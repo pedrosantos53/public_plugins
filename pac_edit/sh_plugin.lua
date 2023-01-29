@@ -6,36 +6,43 @@
 
 PLUGIN.name = "PAC3 Integration with Male/Female support"
 PLUGIN.author = "Black Tea / pedro.santos53"
-PLUGIN.description = "PAC3 integration for item parts. Adds support for male and female pacData (pedro.santos53)."
+PLUGIN.description = "PAC3 integration for item parts. Adds support for male and female-specific PAC data (pedro.santos53)."
 
 
---[[ EXAMPLE USAGE FOR MALE/FEMALE SUPPORT
-	ON UNEQUIP
+--[[  READ ME FOR MALE/FEMALE SPECIFIC PAC
+	
+	Below is an example on how to implement the male/female specific pacData into your outfit item base of choice.
+	The plugin comes with its own PAC outfit item base that inherits from the base Helix outfit.
+	You can opt to use this, or delete it and use your own PAC outfit. Just keep in mind you'll need to manually implement these changes otherwise.
 
-	( assuming you are using ITEM:RemoveOutfit(client) to unequip the outfit )
+	Implementing Male/Female pacData (ON UNEQUIP)
 
-	if self.pacData or self.pacDataFemale or self.pacDataMale then
-		if client:IsFemale() and self.pacDataFemale then
-			client:RemovePart(self.uniqueID .. "female")
-		elseif !client:IsFemale() and self.pacDataMale then
-			client:RemovePart(self.uniqueID .. "male")
-		else
-			client:RemovePart(self.uniqueID)
+	Assuming you are using ITEM:RemoveOutfit(client) to unequip the outfit,
+	replace client:RemovePart(self.uniqueID) with:
+
+		if self.pacData or self.pacDataFemale or self.pacDataMale then
+			if client:IsFemale() and self.pacDataFemale then
+				client:RemovePart(self.uniqueID .. "female")
+			elseif !client:IsFemale() and self.pacDataMale then
+				client:RemovePart(self.uniqueID .. "male")
+			else
+				client:RemovePart(self.uniqueID)
+			end
 		end
-	end
 
-	ON EQUIP
-	( assuming you are using ITEM.functions.Equip to equip the outfit)
+	Implementing Male/Female pacData (ON EQUIP)
+	Assuming you are using ITEM.functions.Equip to equip the outfit,
+	replace client:AddPart(item.uniqueID, item) with:
 
-	if item.pacData or item.pacDataFemale or item.pacDataMale then
-		if client:IsFemale() and item.pacDataFemale then
-			client:AddPart(item.uniqueID .. "female", item)
-		elseif !client:IsFemale() and item.pacDataMale then
-			client:AddPart(item.uniqueID .. "male", item)
-		else
-			client:AddPart(item.uniqueID, item)
+		if item.pacData or item.pacDataFemale or item.pacDataMale then
+			if client:IsFemale() and item.pacDataFemale then
+				client:AddPart(item.uniqueID .. "female", item)
+			elseif !client:IsFemale() and item.pacDataMale then
+				client:AddPart(item.uniqueID .. "male", item)
+			else
+				client:AddPart(item.uniqueID, item)
+			end
 		end
-	end
 --]]
 
 
