@@ -116,10 +116,10 @@ if (SERVER) then
 		self:SetNWBool("beep", true)
 		
 		local function playSound()
-		if 	!IsValid(self) then
+		if !IsValid(self) then
 			 return 
 			end
-			
+
 		  self:EmitSound("buttons/blip1.wav")
 		end
 		
