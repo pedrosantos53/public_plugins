@@ -110,60 +110,53 @@ if (SERVER) then
 
 	function ENT:Use(client)
 		if (self.nextUseTime > CurTime()) then
-			return
+		  return
 		end
-
+		
 		self:SetNWBool("beep", true)
-		self:EmitSound("buttons/blip1.wav")
-		timer.Simple(1, function()
+		
+		local function playSound()
+		if !IsValid(self) then
+			 return 
+			end
+
+		  self:EmitSound("buttons/blip1.wav")
+		end
+		
+		playSound()
+
+		timer.Simple(1, playSound)
+		timer.Simple(2, playSound)
+		timer.Simple(3, playSound)
+		timer.Simple(3.8, playSound)
+		timer.Simple(4.4, playSound)
+		timer.Simple(4.8, playSound)
+		timer.Simple(5.1, playSound)
+		timer.Simple(5.4, playSound)
+		timer.Simple(5.6, playSound)
+		timer.Simple(5.8, playSound)
+		timer.Simple(6, playSound)
+		timer.Simple(6.2, playSound)
+		timer.Simple(6.3, playSound)
+		timer.Simple(6.4, playSound)
+		timer.Simple(6.5, playSound)
+		timer.Simple(6.6, function()
+		  if (IsValid(self.door)) then
 			self:EmitSound("buttons/blip1.wav")
-			timer.Simple(1, function()
-				self:EmitSound("buttons/blip1.wav")
-				timer.Simple(0.8, function()
-					self:EmitSound("buttons/blip1.wav")
-					timer.Simple(0.6, function()
-						self:EmitSound("buttons/blip1.wav")
-						timer.Simple(0.4, function()
-							self:EmitSound("buttons/blip1.wav")
-							timer.Simple(0.4, function()
-								self:EmitSound("buttons/blip1.wav")
-								timer.Simple(0.3, function()
-									self:EmitSound("buttons/blip1.wav")
-									timer.Simple(0.3, function()
-										self:EmitSound("buttons/blip1.wav")
-										timer.Simple(0.2, function()
-											self:EmitSound("buttons/blip1.wav")
-											timer.Simple(0.2, function()
-												self:EmitSound("buttons/blip1.wav")
-												timer.Simple(0.1, function()
-													self:EmitSound("buttons/blip1.wav")
-													timer.Simple(0.1, function()
-														if (IsValid(self.door)) then
-															self:EmitSound("buttons/blip1.wav")
-															self:EmitSound("weapons/explode3.wav")
-															self:Explode()
-															self.door:Fire("unlock")
-															self.door:Fire("open")
-															self:Remove()
-															if (IsValid(self.doorPartner)) then
-																self.doorPartner:Fire("unlock")
-																self.doorPartner:Fire("open")
-															end
-														end
-													end )
-												end )
-											end )
-										end	)
-									end )
-								end )
-							end )
-						end )
-					end	)
-				end )
-			end )
-		end	)
-	self.nextUseTime = CurTime() + 10
-	end
+			self:EmitSound("weapons/explode3.wav")
+			self:Explode()
+			self.door:Fire("unlock")
+			self.door:Fire("open")
+			self:Remove()
+			if (IsValid(self.doorPartner)) then
+			  self.doorPartner:Fire("unlock")
+			  self.doorPartner:Fire("open")
+			end
+		  end
+		end)
+		self.nextUseTime = CurTime() + 10
+	  end
+	  
 else
 	local glowMaterial = ix.util.GetMaterial("sprites/glow04_noz")
 	local color_green = Color(0, 255, 0, 255)
