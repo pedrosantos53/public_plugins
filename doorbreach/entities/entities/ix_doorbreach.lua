@@ -76,12 +76,10 @@ if (SERVER) then
 		end
 
 		if (IsValid(self.door)) then
-			self.door:Fire("unlock")
 			self.door.ixBreach = nil
 		end
 
 		if (IsValid(self.doorPartner)) then
-			self.doorPartner:Fire("unlock")
 			self.doorPartner.ixBreach = nil
 		end
 	end
@@ -97,11 +95,11 @@ if (SERVER) then
 	end
 
 	function ENT:Explode( )
-		local eff = EffectData( )
-		eff:SetStart( self:GetPos( ) )
-		eff:SetOrigin( self:GetPos( ) )
-		eff:SetScale( 6 )
-		util.Effect( "Explosion", eff, true, true )
+		local eff = EffectData()
+		eff:SetStart(self:GetPos())
+		eff:SetOrigin(self:GetPos())
+		eff:SetScale(6)
+		util.Effect("Explosion", eff, true, true)
 
 		-- This determines if and how much damage the surrounding entities (namely, players) take from the blast.
 		util.BlastDamage( self, self, self:GetPos(), 40, 15)
@@ -110,19 +108,19 @@ if (SERVER) then
 
 	function ENT:Use(client)
 		if (self.nextUseTime > CurTime()) then
-		  return
+			return
 		end
-		
+
 		self:SetNWBool("beep", true)
-		
+
 		local function playSound()
-		if !IsValid(self) then
-			 return 
+			if !IsValid(self) then
+				return
 			end
 
-		  self:EmitSound("buttons/blip1.wav")
+		  	self:EmitSound("buttons/blip1.wav")
 		end
-		
+
 		playSound()
 
 		timer.Simple(1, playSound)
@@ -141,26 +139,30 @@ if (SERVER) then
 		timer.Simple(6.4, playSound)
 		timer.Simple(6.5, playSound)
 		timer.Simple(6.6, function()
-		  if (IsValid(self.door)) then
-			self:EmitSound("buttons/blip1.wav")
-			self:EmitSound("weapons/explode3.wav")
-			self:Explode()
-			self.door:Fire("unlock")
-			self.door:Fire("open")
-			self:Remove()
-			if (IsValid(self.doorPartner)) then
-			  self.doorPartner:Fire("unlock")
-			  self.doorPartner:Fire("open")
+		  	if IsValid(self) then
+				self:EmitSound("buttons/blip1.wav")
+				self:EmitSound("weapons/explode3.wav")
+
+				self:Explode()
+				self:Remove()
+
+				if IsValid(self.door) then
+					self.door:Fire("unlock")
+					self.door:Fire("open")
+				end
+
+				if (IsValid(self.doorPartner)) then
+					self.doorPartner:Fire("unlock")
+					self.doorPartner:Fire("open")
+				end
 			end
-		  end
 		end)
+
 		self.nextUseTime = CurTime() + 10
-	  end
-	  
+	end
 else
 	local glowMaterial = ix.util.GetMaterial("sprites/glow04_noz")
 	local color_green = Color(0, 255, 0, 255)
-	local color_blue = Color(0, 100, 255, 255)
 	local color_red = Color(255, 50, 50, 255)
 
 	function ENT:Draw()
